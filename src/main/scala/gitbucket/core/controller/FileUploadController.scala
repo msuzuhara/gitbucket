@@ -17,7 +17,7 @@ import org.apache.commons.io.{FileUtils, IOUtils}
 
 import scala.util.Using
 import gitbucket.core.service.SystemSettingsService
-import slick.jdbc.JdbcBackend.Session
+import gitbucket.core.model.Profile.profile.blockingApi.Session
 
 /**
  * Provides Ajax based file upload functionality.

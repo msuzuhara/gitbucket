@@ -29,7 +29,7 @@ class ScalatraBootstrap extends LifeCycle with SystemSettingsService {
       .getFilterRegistration("apiAuthenticationFilter")
       .addMappingForUrlPatterns(EnumSet.allOf(classOf[DispatcherType]), true, "/api/*")
 
-    // Create composite filter for PreProcessController
+    // Register PreProcessController as filter
     val preProcessFilter = new CompositeScalatraFilter()
     preProcessFilter.mount(new PreProcessController, "/*")
     context.addFilter("preProcessFilter", preProcessFilter)
@@ -42,15 +42,13 @@ class ScalatraBootstrap extends LifeCycle with SystemSettingsService {
       .getFilterRegistration("pluginControllerFilter")
       .addMappingForUrlPatterns(EnumSet.allOf(classOf[DispatcherType]), true, "/*")
 
-    // Create composite filter for FileUploadController
-    val uploadFilter = new CompositeScalatraFilter()
-    uploadFilter.mount(new FileUploadController, "/upload")
-    context.addFilter("uploadFilter", uploadFilter)
+    // Register FileUploadController as servlet
+    context.addServlet("fileUploadController", new FileUploadController)
     context
-      .getFilterRegistration("uploadFilter")
-      .addMappingForUrlPatterns(EnumSet.allOf(classOf[DispatcherType]), true, "/upload/*")
+      .getServletRegistration("fileUploadController")
+      .addMapping("/upload/*")
 
-    // Create main composite filter
+    // Create main composite filter for other controllers
     val mainFilter = new CompositeScalatraFilter()
     mainFilter.mount(new IndexController, "/")
     mainFilter.mount(new ApiController, "/api/v3")

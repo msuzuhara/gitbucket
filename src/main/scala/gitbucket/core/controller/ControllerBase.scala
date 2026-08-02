@@ -244,7 +244,11 @@ abstract class ControllerBase
 
   // jenkins send message as 'application/x-www-form-urlencoded' but scalatra already parsed as multi-part-request.
   def extractFromJsonBody[A](implicit mf: Manifest[A]): Option[A] = {
-    (request.contentType.map(_.split(";").head.toLowerCase) match {
+    val ct = request.contentType match {
+      case Some(ct) => Some(ct.split(";").head.toLowerCase)
+      case None => None
+    }
+    (ct match {
       case Some("application/x-www-form-urlencoded") => multiParams.keys.headOption.map(parse(_))
       case Some("application/json")                  => Some(parsedBody)
       case _                                         => Some(parse(request.body))
