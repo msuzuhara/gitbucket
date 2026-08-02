@@ -291,5 +291,5 @@ Container / javaOptions ++= Seq(
   "-Dorg.eclipse.jetty.annotations.AnnotationParser.LEVEL=OFF",
   // "-Ddev-features=keep-session"
 )
-Container / containerLibs := Seq(("org.eclipse.jetty" % "jetty-runner" % JettyVersion).intransitive())
-Container / containerMain := "org.eclipse.jetty.runner.Runner"
+Container / containerLibs := Seq(("org.eclipse.jetty.ee10" % "jetty-ee10-runner" % JettyVersion).intransitive())
+Container / containerMain := "org.eclipse.jetty.ee10.runner.Runner"
