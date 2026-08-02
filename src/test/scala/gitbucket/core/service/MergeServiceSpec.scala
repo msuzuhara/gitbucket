@@ -9,7 +9,7 @@ import java.io.File
 import java.util.Date
 import java.net.InetSocketAddress
 import java.nio.charset.StandardCharsets
-import javax.servlet.http.{HttpServletRequest, HttpServletResponse}
+import jakarta.servlet.http.{HttpServletRequest, HttpServletResponse}
 import scala.util.Using
 import scala.jdk.CollectionConverters.*
 import gitbucket.core.controller.Context

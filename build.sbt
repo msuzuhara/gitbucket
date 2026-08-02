@@ -4,8 +4,8 @@ val Organization = "io.github.gitbucket"
 val Name = "gitbucket"
 val GitBucketVersion = "4.46.1"
 val ScalatraVersion = "3.1.2"
-val JettyVersion = "10.0.26"
-val JgitVersion = "6.10.1.202505221210-r"
+val JettyVersion = "12.0.37"
+val JgitVersion = "v7.7.1.202607240634-r"
 
 lazy val root = (project in file("."))
   .enablePlugins(SbtTwirl, ContainerPlugin)
@@ -59,7 +59,7 @@ libraryDependencies ++= Seq(
   "com.github.zafarkhaja"           % "java-semver"               % "0.10.2",
   "com.nimbusds"                    % "oauth2-oidc-sdk"           % "11.37",
   "org.eclipse.jetty"               % "jetty-webapp"              % JettyVersion    % "provided",
-  "javax.servlet"                   % "javax.servlet-api"         % "3.1.0"         % "provided",
+  "jakarta.servlet"                 % "jakarta.servlet-api"       % "6.0.0"         % "provided",
   "junit"                           % "junit"                     % "4.13.2"        % "test",
   "org.scalatra"                   %% "scalatra-scalatest-javax"  % ScalatraVersion % "test",
   "org.mockito"                     % "mockito-core"              % "5.23.0"        % "test",

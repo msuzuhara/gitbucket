@@ -21,7 +21,7 @@ import gitbucket.core.service.SystemSettingsService.{
   SystemSettings
 }
 
-import javax.servlet.http.{HttpServletRequest, HttpSession}
+import jakarta.servlet.http.{HttpServletRequest, HttpSession}
 import org.mockito.Mockito.*
 
 import scala.util.Random
