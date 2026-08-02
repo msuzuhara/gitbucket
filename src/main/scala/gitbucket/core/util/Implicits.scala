@@ -19,7 +19,10 @@ import slick.jdbc.JdbcBackend
 object Implicits {
 
   // Convert to slick session.
-  implicit def request2Session(implicit request: HttpServletRequest): JdbcBackend#Session = Database.getSession(request)
+  implicit def request2Session(implicit request: HttpServletRequest): JdbcBackend#Session = {
+    import gitbucket.core.model.Profile.profile.blockingApi.Session
+    Database.getSession(request).asInstanceOf[Session]
+  }
 
   implicit def context2ApiJsonFormatContext(implicit context: Context): JsonFormat.Context =
     JsonFormat.Context(context.baseUrl, context.settings.sshUrl)
@@ -78,6 +81,10 @@ object Implicits {
 
     def gitRepositoryPath: String =
       request.getRequestURI.replaceFirst("^" + quote(request.getContextPath) + "/git/", "/")
+    
+    def contentType: Option[String] = Option(request.getContentType)
+    
+    def body: String = scala.io.Source.fromInputStream(request.getInputStream).mkString
 
   }
 
@@ -86,8 +93,11 @@ object Implicits {
       val value = session.getAttribute(key).asInstanceOf[T]
       if (value == null) {
         session.removeAttribute(key)
+        None
+      } else {
+        session.removeAttribute(key)
+        Some(value)
       }
-      Option(value)
     }
   }
 

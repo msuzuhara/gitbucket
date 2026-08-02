@@ -55,9 +55,9 @@ abstract class ControllerBase
     request.setAttribute(Keys.Request.APIv3, true)
   }
 
-  override def multiParams(implicit request: HttpServletRequest): MultiParams = {
+  override def multiParams: MultiParams = {
     try {
-      super.multiParams
+      super.multiParams(this.request)
     } catch {
       case _: Exception => throw HttpException(400)
     }
@@ -208,9 +208,9 @@ abstract class ControllerBase
     includeServletPath: Boolean = true,
     absolutize: Boolean = true,
     withSessionId: Boolean = true
-  )(implicit request: HttpServletRequest, response: HttpServletResponse): String =
+  ): String =
     if (path.startsWith("http")) path
-    else baseUrl + super.url(path, params, includeContextPath = false, includeServletPath = false, absolutize = false)
+    else baseUrl + super.url(path, params, includeContextPath = false, includeServletPath = false, absolutize = false)(this.request, this.response)
 
   /**
    * Extends scalatra-form's trim rule to eliminate CR and LF.
@@ -243,7 +243,7 @@ abstract class ControllerBase
   }
 
   // jenkins send message as 'application/x-www-form-urlencoded' but scalatra already parsed as multi-part-request.
-  def extractFromJsonBody[A](implicit request: HttpServletRequest, mf: Manifest[A]): Option[A] = {
+  def extractFromJsonBody[A](implicit mf: Manifest[A]): Option[A] = {
     (request.contentType.map(_.split(";").head.toLowerCase) match {
       case Some("application/x-www-form-urlencoded") => multiParams.keys.headOption.map(parse(_))
       case Some("application/json")                  => Some(parsedBody)
