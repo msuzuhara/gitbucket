@@ -58,7 +58,7 @@ libraryDependencies ++= Seq(
   "net.coobird"                     % "thumbnailator"             % "0.4.21",
   "com.github.zafarkhaja"           % "java-semver"               % "0.10.2",
   "com.nimbusds"                    % "oauth2-oidc-sdk"           % "11.37",
-  "org.eclipse.jetty"               % "jetty-webapp"              % JettyVersion    % "provided",
+  "org.eclipse.jetty.ee10"          % "jetty-ee10-webapp"         % JettyVersion    % "provided",
   "jakarta.servlet"                 % "jakarta.servlet-api"       % "6.0.0"         % "provided",
   "junit"                           % "junit"                     % "4.13.2"        % "test",
   "org.scalatra"                   %% "scalatra-scalatest-javax"  % ScalatraVersion % "test",
@@ -122,14 +122,14 @@ signedArtifacts := {
 val ExecutableConfig = config("executable").hide
 Keys.ivyConfigurations += ExecutableConfig
 libraryDependencies ++= Seq(
-  "org.eclipse.jetty" % "jetty-security" % JettyVersion % "executable",
-  "org.eclipse.jetty" % "jetty-webapp"   % JettyVersion % "executable",
-  "org.eclipse.jetty" % "jetty-server"   % JettyVersion % "executable",
-  "org.eclipse.jetty" % "jetty-xml"      % JettyVersion % "executable",
-  "org.eclipse.jetty" % "jetty-http"     % JettyVersion % "executable",
-  "org.eclipse.jetty" % "jetty-servlet"  % JettyVersion % "executable",
-  "org.eclipse.jetty" % "jetty-io"       % JettyVersion % "executable",
-  "org.eclipse.jetty" % "jetty-util"     % JettyVersion % "executable"
+  "org.eclipse.jetty"      % "jetty-security" % JettyVersion % "executable",
+  "org.eclipse.jetty.ee10" % "jetty-webapp"   % JettyVersion % "executable",
+  "org.eclipse.jetty"      % "jetty-server"   % JettyVersion % "executable",
+  "org.eclipse.jetty"      % "jetty-xml"      % JettyVersion % "executable",
+  "org.eclipse.jetty"      % "jetty-http"     % JettyVersion % "executable",
+  "org.eclipse.jetty.ee10" % "jetty-servlet"  % JettyVersion % "executable",
+  "org.eclipse.jetty"      % "jetty-io"       % JettyVersion % "executable",
+  "org.eclipse.jetty"      % "jetty-util"     % JettyVersion % "executable"
 )
 
 // Run package task before test to generate target/webapp for integration test
