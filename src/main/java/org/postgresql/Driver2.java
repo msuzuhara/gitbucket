@@ -25,7 +25,6 @@ public class Driver2 extends Driver {
         return Connection.class.cast(proxy);
     }
 
-
     private static class ConnectionProxyHandler implements InvocationHandler {
 
         private Connection conn;
