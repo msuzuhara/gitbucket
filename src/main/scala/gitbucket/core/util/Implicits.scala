@@ -81,8 +81,6 @@ object Implicits {
 
     def gitRepositoryPath: String =
       request.getRequestURI.replaceFirst("^" + quote(request.getContextPath) + "/git/", "/")
-    
-    def body: String = scala.io.Source.fromInputStream(request.getInputStream).mkString
 
   }
 

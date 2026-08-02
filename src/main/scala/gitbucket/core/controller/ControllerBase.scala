@@ -251,7 +251,8 @@ abstract class ControllerBase
     (ct match {
       case Some("application/x-www-form-urlencoded") => multiParams.keys.headOption.map(parse(_))
       case Some("application/json")                  => Some(parsedBody)
-      case _                                         => Some(parse(request.body))
+      case _                                         => 
+        Some(parse(scala.io.Source.fromInputStream(request.getInputStream).mkString))
     }).filterNot(_ == JNothing).flatMap(j => Try(j.extract[A]).toOption)
   }
 

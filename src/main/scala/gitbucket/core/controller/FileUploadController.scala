@@ -80,6 +80,7 @@ class FileUploadController
       val repository = params("repository")
 
       // Check whether logged-in user is collaborator
+      implicit val dbSession: Session = Database.getSession(request)
       onlyWikiEditable(owner, repository, loginAccount) {
         execute(
           { (file, fileId) =>
@@ -177,8 +178,7 @@ class FileUploadController
     config.apply(request.getServletContext)
   }
 
-  private def onlyWikiEditable(owner: String, repository: String, loginAccount: Account)(action: => Any): Any = {
-    implicit val session: Session = Database.getSession(request)
+  private def onlyWikiEditable(owner: String, repository: String, loginAccount: Account)(action: => Any)(implicit s: Session): Any = {
     getRepository(owner, repository) match {
       case Some(x) =>
         x.repository.options.wikiOption match {
