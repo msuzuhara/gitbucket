@@ -3,6 +3,7 @@ package gitbucket.core.controller
 import java.io.{File, FileInputStream, FileOutputStream}
 import gitbucket.core.api.{ApiError, JsonFormat}
 import gitbucket.core.model.Account
+import gitbucket.core.servlet.Database
 import gitbucket.core.service.{AccountService, RepositoryService, SystemSettingsService}
 import gitbucket.core.util.SyntaxSugars.*
 import gitbucket.core.util.Directory.*
@@ -47,6 +48,9 @@ abstract class ControllerBase
   private val logger = LoggerFactory.getLogger(getClass)
 
   implicit val jsonFormats: Formats = gitbucket.core.api.JsonFormat.jsonFormats
+
+  protected implicit lazy val s: gitbucket.core.model.Profile.profile.blockingApi.Session =
+    Database.getSession(request)
 
   private case class HttpException(status: Int) extends RuntimeException
 

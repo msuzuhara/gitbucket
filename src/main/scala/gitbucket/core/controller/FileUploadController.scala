@@ -178,8 +178,6 @@ class FileUploadController
   }
 
   private def onlyWikiEditable(owner: String, repository: String, loginAccount: Account)(action: => Any): Any = {
-    val dbSession: Session = Database.getSession(request)
-    implicit val s: Session = dbSession
     getRepository(owner, repository) match {
       case Some(x) =>
         x.repository.options.wikiOption match {
