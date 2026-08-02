@@ -20,7 +20,8 @@ object Implicits {
 
   // Session conversion removed to avoid ambiguous implicit conflicts
   // Use Database.getSession(request) explicitly or pass session as implicit parameter
-  implicit def request2Session(implicit request: HttpServletRequest): JdbcBackend#Session = Database.getSession(request)
+  // implicit def request2Session(implicit request: HttpServletRequest): JdbcBackend#Session = Database.getSession(request)
+  def request2Session(request: HttpServletRequest): JdbcBackend#Session =Database.getSession(request)
 
   implicit def context2ApiJsonFormatContext(implicit context: Context): JsonFormat.Context =
     JsonFormat.Context(context.baseUrl, context.settings.sshUrl)
