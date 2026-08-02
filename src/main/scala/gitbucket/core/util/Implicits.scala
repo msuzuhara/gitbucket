@@ -18,11 +18,8 @@ import slick.jdbc.JdbcBackend
  */
 object Implicits {
 
-  // Convert to slick session.
-  implicit def request2Session(implicit request: HttpServletRequest): JdbcBackend#Session = {
-    import gitbucket.core.model.Profile.profile.blockingApi.Session
-    Database.getSession(request).asInstanceOf[Session]
-  }
+  // Session conversion removed to avoid ambiguous implicit conflicts
+  // Use Database.getSession(request) explicitly or pass session as implicit parameter
 
   implicit def context2ApiJsonFormatContext(implicit context: Context): JsonFormat.Context =
     JsonFormat.Context(context.baseUrl, context.settings.sshUrl)
