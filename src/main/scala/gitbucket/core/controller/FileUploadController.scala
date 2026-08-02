@@ -14,7 +14,7 @@ import org.eclipse.jgit.lib.{Constants, FileMode}
 import org.scalatra._
 import org.scalatra.servlet.{FileItem, FileUploadSupport, MultipartConfig}
 import org.apache.commons.io.{FileUtils, IOUtils}
-
+import Implicits.request2Session
 import scala.util.Using
 import gitbucket.core.service.SystemSettingsService
 import gitbucket.core.model.Profile.profile.blockingApi.Session
