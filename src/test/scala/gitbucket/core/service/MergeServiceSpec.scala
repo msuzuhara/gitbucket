@@ -9,7 +9,6 @@ import java.io.File
 import java.util.Date
 import java.net.InetSocketAddress
 import java.nio.charset.StandardCharsets
-import jakarta.servlet.http.{HttpServletRequest, HttpServletResponse}
 import scala.util.Using
 import scala.jdk.CollectionConverters.*
 import gitbucket.core.controller.Context
@@ -21,8 +20,9 @@ import gitbucket.core.model.*
 import gitbucket.core.model.Profile.*
 import gitbucket.core.model.Profile.profile.blockingApi.*
 import gitbucket.core.model.Session
-import org.eclipse.jetty.webapp.WebAppContext
-import org.eclipse.jetty.server.{Request, Server}
+import org.eclipse.jetty.ee10.webapp.WebAppContext
+import org.eclipse.jetty.server.{Request, Response, Server}
+import org.eclipse.jetty.util.Callback
 import org.json4s.jackson.JsonMethods.*
 import org.json4s.{Formats, jvalue2monadic}
 import MergeServiceSpec.*
@@ -279,20 +279,17 @@ object MergeServiceSpec {
     server.setStopTimeout(500)
     server.setHandler(new AbstractHandler {
       override def handle(
-        target: String,
-        baseRequest: Request,
-        request: HttpServletRequest,
-        response: HttpServletResponse
-      ): Unit = {
-        lastRequestURI = request.getRequestURI
-        lastRequestHeaders = request.getHeaderNames.asScala.map { key =>
-          key -> request.getHeader(key)
+        request: Request,
+        response: Response,
+        callback: Callback
+      ): Boolean = {
+        lastRequestURI = request.getHttpURI.getPath
+        lastRequestHeaders = request.getHeaders.asScala.map { header =>
+          header.getName -> header.getValue
         }.toMap
-        val bytes = new Array[Byte](request.getContentLength)
-        if (bytes.length > 0) {
-          request.getInputStream.read(bytes)
-          lastRequestContent = bytes
-        }
+        lastRequestContent = Request.asInputStream(request).readAllBytes()
+        callback.succeeded()
+        true
       }
     })
     server.start()

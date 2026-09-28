@@ -6,9 +6,10 @@ import java.io.File
 
 import gitbucket.core.util.{FileUtil, HttpClientUtil}
 import org.apache.http.client.methods.HttpGet
+import org.eclipse.jetty.util.resource.ResourceFactory
 import org.eclipse.jetty.server.handler.StatisticsHandler
 import org.eclipse.jetty.server.{Handler, Server}
-import org.eclipse.jetty.webapp.WebAppContext
+import org.eclipse.jetty.ee10.webapp.WebAppContext
 import org.kohsuke.github.GitHub
 
 class TestingGitBucketServer(val port: Int = 19999) extends AutoCloseable {
@@ -27,7 +28,7 @@ class TestingGitBucketServer(val port: Int = 19999) extends AutoCloseable {
     server = new Server(address)
 
     val context = new WebAppContext
-    context.setResourceBase("./target/webapp")
+    context.setBaseResource(ResourceFactory.of(context).newResource("./target/webapp"))
     context.setContextPath("")
     context.setInitParameter("org.eclipse.jetty.servlet.Default.dirAllowed", "false")
     context.setServer(server)
