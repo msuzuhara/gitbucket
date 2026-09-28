@@ -2,14 +2,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>net.obslib</groupId>
-    <artifactId>gitbucket</artifactId>
+    <artifactId>gitbucket-jakartaee</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
     <name>gitbucket-1.0-SNAPSHOT</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jakartaee>11.0.0-M1</jakartaee>
+        <jakartaee>11.0.0</jakartaee>
         <JettyVersion>12.0.37</JettyVersion>
     </properties>
 
