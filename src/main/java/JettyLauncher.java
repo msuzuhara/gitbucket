@@ -6,15 +6,14 @@ import org.eclipse.jetty.server.SecureRequestCustomizer;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
 import org.eclipse.jetty.server.SslConnectionFactory;
-import org.eclipse.jetty.server.handler.HandlerList;
 import org.eclipse.jetty.server.handler.SecuredRedirectHandler;
 import org.eclipse.jetty.server.handler.StatisticsHandler;
-import org.eclipse.jetty.server.session.DefaultSessionCache;
-import org.eclipse.jetty.server.session.FileSessionDataStore;
-import org.eclipse.jetty.server.session.SessionCache;
-import org.eclipse.jetty.server.session.SessionHandler;
+import org.eclipse.jetty.session.DefaultSessionCache;
+import org.eclipse.jetty.session.FileSessionDataStore;
+import org.eclipse.jetty.session.SessionCache;
+import org.eclipse.jetty.ee10.servlet.SessionHandler;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
-import org.eclipse.jetty.webapp.WebAppContext;
+import org.eclipse.jetty.ee10.webapp.WebAppContext;
 
 import java.io.File;
 import java.net.InetAddress;
@@ -232,13 +231,14 @@ public class JettyLauncher {
         context.setServer(server);
         context.setWar(location.toExternalForm());
 
-        final HandlerList handlers = new HandlerList();
+        List<Handler> list = new ArrayList<>();
 
         if (fallback(redirectHttps, Defaults.REDIRECT_HTTPS, Boolean::parseBoolean)) {
-            handlers.addHandler(new SecuredRedirectHandler());
+            list.add(new SecuredRedirectHandler());
         }
 
-        handlers.addHandler(addStatisticsHandler(context));
+        list.add(addStatisticsHandler(context));
+        Handler.Sequence handlers = new Handler.Sequence(list);
 
         server.setHandler(handlers);
         server.setStopAtShutdown(true);

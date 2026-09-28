@@ -4,8 +4,8 @@ val Organization = "io.github.gitbucket"
 val Name = "gitbucket"
 val GitBucketVersion = "4.46.1"
 val ScalatraVersion = "3.1.2"
-val JettyVersion = "10.0.26"
-val JgitVersion = "6.10.1.202505221210-r"
+val JettyVersion = "12.0.37"
+val JgitVersion = "7.7.0.202606012155-r"
 
 lazy val root = (project in file("."))
   .enablePlugins(SbtTwirl, ContainerPlugin)
@@ -25,9 +25,9 @@ coverageExcludedPackages := ".*\\.html\\..*"
 libraryDependencies ++= Seq(
   "org.eclipse.jgit"          % "org.eclipse.jgit.http.server" % JgitVersion,
   "org.eclipse.jgit"          % "org.eclipse.jgit.archive"     % JgitVersion,
-  "org.scalatra"             %% "scalatra-javax"               % ScalatraVersion,
-  "org.scalatra"             %% "scalatra-json-javax"          % ScalatraVersion,
-  "org.scalatra"             %% "scalatra-forms-javax"         % ScalatraVersion,
+  "org.scalatra"             %% "scalatra-jakarta"             % ScalatraVersion,
+  "org.scalatra"             %% "scalatra-json-jakarta"        % ScalatraVersion,
+  "org.scalatra"             %% "scalatra-forms-jakarta"       % ScalatraVersion,
   "io.github.json4s"         %% "json4s-jackson"               % "4.1.0",
   "commons-io"                % "commons-io"                   % "2.21.0",
   "io.github.gitbucket"       % "solidbase"                    % "1.1.0",
@@ -58,10 +58,10 @@ libraryDependencies ++= Seq(
   "net.coobird"                     % "thumbnailator"             % "0.4.21",
   "com.github.zafarkhaja"           % "java-semver"               % "0.10.2",
   "com.nimbusds"                    % "oauth2-oidc-sdk"           % "11.37",
-  "org.eclipse.jetty"               % "jetty-webapp"              % JettyVersion    % "provided",
-  "javax.servlet"                   % "javax.servlet-api"         % "3.1.0"         % "provided",
+  "org.eclipse.jetty.ee10"          % "jetty-ee10-webapp"         % JettyVersion    % "provided",
+  "jakarta.servlet"                 % "jakarta.servlet-api"       % "6.0.0"         % "provided",
   "junit"                           % "junit"                     % "4.13.2"        % "test",
-  "org.scalatra"                   %% "scalatra-scalatest-javax"  % ScalatraVersion % "test",
+  "org.scalatra"                   %% "scalatra-scalatest-jakarta" % ScalatraVersion % "test",
   "org.mockito"                     % "mockito-core"              % "5.23.0"        % "test",
   "org.testcontainers"              % "testcontainers-mysql"      % "2.0.4"         % "test",
   "org.testcontainers"              % "testcontainers-postgresql" % "2.0.4"         % "test",
@@ -122,14 +122,14 @@ signedArtifacts := {
 val ExecutableConfig = config("executable").hide
 Keys.ivyConfigurations += ExecutableConfig
 libraryDependencies ++= Seq(
-  "org.eclipse.jetty" % "jetty-security" % JettyVersion % "executable",
-  "org.eclipse.jetty" % "jetty-webapp"   % JettyVersion % "executable",
-  "org.eclipse.jetty" % "jetty-server"   % JettyVersion % "executable",
-  "org.eclipse.jetty" % "jetty-xml"      % JettyVersion % "executable",
-  "org.eclipse.jetty" % "jetty-http"     % JettyVersion % "executable",
-  "org.eclipse.jetty" % "jetty-servlet"  % JettyVersion % "executable",
-  "org.eclipse.jetty" % "jetty-io"       % JettyVersion % "executable",
-  "org.eclipse.jetty" % "jetty-util"     % JettyVersion % "executable"
+  "org.eclipse.jetty"      % "jetty-security"       % JettyVersion % "executable",
+  "org.eclipse.jetty.ee10" % "jetty-ee10-webapp"    % JettyVersion % "executable",
+  "org.eclipse.jetty"      % "jetty-server"         % JettyVersion % "executable",
+  "org.eclipse.jetty"      % "jetty-xml"            % JettyVersion % "executable",
+  "org.eclipse.jetty"      % "jetty-http"           % JettyVersion % "executable",
+  "org.eclipse.jetty.ee10" % "jetty-ee10-servlet"   % JettyVersion % "executable",
+  "org.eclipse.jetty"      % "jetty-io"             % JettyVersion % "executable",
+  "org.eclipse.jetty"      % "jetty-util"           % JettyVersion % "executable"
 )
 
 // Run package task before test to generate target/webapp for integration test
@@ -291,5 +291,5 @@ Container / javaOptions ++= Seq(
   "-Dorg.eclipse.jetty.annotations.AnnotationParser.LEVEL=OFF",
   // "-Ddev-features=keep-session"
 )
-Container / containerLibs := Seq(("org.eclipse.jetty" % "jetty-runner" % JettyVersion).intransitive())
-Container / containerMain := "org.eclipse.jetty.runner.Runner"
+Container / containerLibs := Seq(("org.eclipse.jetty.ee10" % "jetty-ee10-runner" % JettyVersion).intransitive())
+Container / containerMain := "org.eclipse.jetty.ee10.runner.Runner"

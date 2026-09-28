@@ -92,11 +92,11 @@ BSD | [Two-clause BSD-style license](http://github.com/slick/slick/blob/master/L
 CC0 | [CC0](http://creativecommons.org/publicdomain/zero/1.0/) | org.reactivestreams # reactive-streams # 1.0.0 | <notextile></notextile>
 CC0 | [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/) | net.i2p.crypto # eddsa # 0.3.0 | <notextile></notextile>
 CC0 | [CC0 1.0 Universal License](http://creativecommons.org/publicdomain/zero/1.0/) | org.scijava # native-lib-loader # 2.0.2 | <notextile></notextile>
-CDDL | [Common Development and Distribution License (CDDL) v1.0](https://glassfish.dev.java.net/public/CDDLv1.0.html) | javax.activation # activation # 1.1 | <notextile></notextile>
+ECLIPSE | [Eclipse Public License - v 2.0](https://github.com/jakartaee/jaf-api/blob/main/LICENSE.md) | jakarta.activation # activation # 2.1.4 | <notextile></notextile>
+ECLIPSE | [Eclipse Public License - v 2.0](https://github.com/jakartaee/common-annotations-api/blob/master/LICENSE.md) | jakarta.annotation # jakarta.annotation-api # 2.1.1 | <notextile></notextile>
+ECLIPSE | [Eclipse Public License - v 2.0](https://github.com/jakartaee/servlet/blob/main/LICENSE.md) | jakarta.servlet # jakarta.servlet-api # 6.0.0 | <notextile></notextile>
 GPL | [CDDL/GPLv2+CE](https://javaee.github.io/javamail/LICENSE) | com.sun.mail # javax.mail # 1.6.1 | <notextile></notextile>
 GPL | [GPL2 w/ CPE](https://oss.oracle.com/licenses/CDDL+GPL-1.1) | javax.xml.bind # jaxb-api # 2.3.0 | <notextile></notextile>
-GPL with Classpath Extension | [CDDL + GPLv2 with classpath exception](https://github.com/javaee/javax.annotation/blob/master/LICENSE) | javax.annotation # javax.annotation-api # 1.3.1 | <notextile></notextile>
-GPL with Classpath Extension | [CDDL + GPLv2 with classpath exception](https://glassfish.dev.java.net/nonav/public/CDDL+GPL.html) | javax.servlet # javax.servlet-api # 3.1.0 | <notextile></notextile>
 LGPL | [GNU Lesser General Public License](http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html) | ch.qos.logback # logback-classic # 1.2.3 | <notextile></notextile>
 LGPL | [GNU Lesser General Public License](http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html) | ch.qos.logback # logback-core # 1.2.3 | <notextile></notextile>
 LGPL | [GNU Lesser General Public License, Version 2.1](http://www.gnu.org/licenses/lgpl-2.1.html) | com.mchange # c3p0 # 0.9.5.2 | <notextile></notextile>
