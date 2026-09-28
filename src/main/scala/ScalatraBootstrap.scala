@@ -29,43 +29,33 @@ class ScalatraBootstrap extends LifeCycle with SystemSettingsService {
       .getFilterRegistration("apiAuthenticationFilter")
       .addMappingForUrlPatterns(EnumSet.allOf(classOf[DispatcherType]), true, "/api/*")
 
-    // Register PreProcessController as filter
-    val preProcessFilter = new CompositeScalatraFilter()
-    preProcessFilter.mount(new PreProcessController, "/*")
-    context.addFilter("preProcessFilter", preProcessFilter)
-    context
-      .getFilterRegistration("preProcessFilter")
-      .addMappingForUrlPatterns(EnumSet.allOf(classOf[DispatcherType]), true, "/*")
+    // Register controllers
+    context.mount(new PreProcessController, "/*")
 
     context.addFilter("pluginControllerFilter", new PluginControllerFilter)
     context
       .getFilterRegistration("pluginControllerFilter")
       .addMappingForUrlPatterns(EnumSet.allOf(classOf[DispatcherType]), true, "/*")
 
-    // Register FileUploadController as servlet
-    context.addServlet("fileUploadController", new FileUploadController)
-    context
-      .getServletRegistration("fileUploadController")
-      .addMapping("/upload/*")
+    context.mount(new FileUploadController, "/upload")
 
-    // Create main composite filter for other controllers
-    val mainFilter = new CompositeScalatraFilter()
-    mainFilter.mount(new IndexController, "/")
-    mainFilter.mount(new ApiController, "/api/v3")
-    mainFilter.mount(new SystemSettingsController, "/admin")
-    mainFilter.mount(new DashboardController, "/*")
-    mainFilter.mount(new AccountController, "/*")
-    mainFilter.mount(new RepositoryViewerController, "/*")
-    mainFilter.mount(new WikiController, "/*")
-    mainFilter.mount(new LabelsController, "/*")
-    mainFilter.mount(new PrioritiesController, "/*")
-    mainFilter.mount(new MilestonesController, "/*")
-    mainFilter.mount(new IssuesController, "/*")
-    mainFilter.mount(new PullRequestsController, "/*")
-    mainFilter.mount(new ReleaseController, "/*")
-    mainFilter.mount(new RepositorySettingsController, "/*")
+    val filter = new CompositeScalatraFilter()
+    filter.mount(new IndexController, "/")
+    filter.mount(new ApiController, "/api/v3")
+    filter.mount(new SystemSettingsController, "/admin")
+    filter.mount(new DashboardController, "/*")
+    filter.mount(new AccountController, "/*")
+    filter.mount(new RepositoryViewerController, "/*")
+    filter.mount(new WikiController, "/*")
+    filter.mount(new LabelsController, "/*")
+    filter.mount(new PrioritiesController, "/*")
+    filter.mount(new MilestonesController, "/*")
+    filter.mount(new IssuesController, "/*")
+    filter.mount(new PullRequestsController, "/*")
+    filter.mount(new ReleaseController, "/*")
+    filter.mount(new RepositorySettingsController, "/*")
 
-    context.addFilter("compositeScalatraFilter", mainFilter)
+    context.addFilter("compositeScalatraFilter", filter)
     context
       .getFilterRegistration("compositeScalatraFilter")
       .addMappingForUrlPatterns(EnumSet.allOf(classOf[DispatcherType]), true, "/*")

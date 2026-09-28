@@ -889,7 +889,7 @@ trait AccountControllerBase extends AccountManagementControllerBase {
   private def validGpgPublicKey: Constraint = new Constraint() {
     override def validate(name: String, value: String, messages: Messages): Option[String] = {
       GpgUtil.str2GpgKeyId(value) match {
-        case Some(keyId) if GpgUtil.getGpgKey(keyId).isEmpty =>
+        case Some(s) if GpgUtil.getGpgKey(s).isEmpty =>
           None
         case Some(_) =>
           Some("GPG key is duplicated.")

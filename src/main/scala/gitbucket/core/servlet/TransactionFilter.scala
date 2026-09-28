@@ -6,7 +6,7 @@ import com.zaxxer.hikari._
 import gitbucket.core.util.DatabaseConfig
 import org.scalatra.ScalatraBase
 import org.slf4j.LoggerFactory
-import slick.jdbc.JdbcBackend.{Database => SlickDatabase, Session => SlickJdbcSession}
+import slick.jdbc.JdbcBackend.{Database => SlickDatabase, Session}
 import gitbucket.core.util.Keys
 import gitbucket.core.model.Profile.profile.blockingApi._
 
@@ -71,8 +71,8 @@ object Database {
 
   def apply(): SlickDatabase = db
 
-  def getSession(req: ServletRequest): SlickJdbcSession =
-    req.getAttribute(Keys.Request.DBSession).asInstanceOf[SlickJdbcSession]
+  def getSession(req: ServletRequest): Session =
+    req.getAttribute(Keys.Request.DBSession).asInstanceOf[Session]
 
   def closeDataSource(): Unit = dataSource.close
 

@@ -15,6 +15,7 @@ import org.json4s.jackson.Serialization
 import org.scalatra.*
 import org.scalatra.forms.*
 import org.scalatra.i18n.Messages
+
 import scala.collection.mutable.ListBuffer
 import scala.util.Using
 

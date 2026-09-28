@@ -3,7 +3,6 @@ package gitbucket.core.controller
 import java.io.{File, FileInputStream, FileOutputStream}
 import gitbucket.core.api.{ApiError, JsonFormat}
 import gitbucket.core.model.Account
-import gitbucket.core.servlet.Database
 import gitbucket.core.service.{AccountService, RepositoryService, SystemSettingsService}
 import gitbucket.core.util.SyntaxSugars.*
 import gitbucket.core.util.Directory.*
@@ -49,9 +48,6 @@ abstract class ControllerBase
 
   implicit val jsonFormats: Formats = gitbucket.core.api.JsonFormat.jsonFormats
 
-  protected implicit lazy val s: gitbucket.core.model.Profile.profile.blockingApi.Session =
-    Database.getSession(request)
-
   private case class HttpException(status: Int) extends RuntimeException
 
   before("/api/v3/*") {
@@ -59,9 +55,9 @@ abstract class ControllerBase
     request.setAttribute(Keys.Request.APIv3, true)
   }
 
-  override def multiParams: MultiParams = {
+  override def multiParams(implicit request: HttpServletRequest): MultiParams = {
     try {
-      super.multiParams(this.request)
+      super.multiParams
     } catch {
       case _: Exception => throw HttpException(400)
     }
@@ -212,9 +208,9 @@ abstract class ControllerBase
     includeServletPath: Boolean = true,
     absolutize: Boolean = true,
     withSessionId: Boolean = true
-  ): String =
+  )(implicit request: HttpServletRequest, response: HttpServletResponse): String =
     if (path.startsWith("http")) path
-    else baseUrl + super.url(path, params, includeContextPath = false, includeServletPath = false, absolutize = false)(this.request, this.response)
+    else baseUrl + super.url(path, params, includeContextPath = false, includeServletPath = false, absolutize = false)
 
   /**
    * Extends scalatra-form's trim rule to eliminate CR and LF.
@@ -247,16 +243,11 @@ abstract class ControllerBase
   }
 
   // jenkins send message as 'application/x-www-form-urlencoded' but scalatra already parsed as multi-part-request.
-  def extractFromJsonBody[A](implicit mf: Manifest[A]): Option[A] = {
-    val ct = request.contentType match {
-      case Some(ct) => Some(ct.split(";").head.toLowerCase)
-      case None => None
-    }
-    (ct match {
+  def extractFromJsonBody[A](implicit request: HttpServletRequest, mf: Manifest[A]): Option[A] = {
+    (request.contentType.map(_.split(";").head.toLowerCase) match {
       case Some("application/x-www-form-urlencoded") => multiParams.keys.headOption.map(parse(_))
       case Some("application/json")                  => Some(parsedBody)
-      case _                                         => 
-        Some(parse(scala.io.Source.fromInputStream(request.getInputStream).mkString))
+      case _                                         => Some(parse(request.body))
     }).filterNot(_ == JNothing).flatMap(j => Try(j.extract[A]).toOption)
   }
 

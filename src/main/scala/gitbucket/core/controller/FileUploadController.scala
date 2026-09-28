@@ -14,9 +14,10 @@ import org.eclipse.jgit.lib.{Constants, FileMode}
 import org.scalatra._
 import org.scalatra.servlet.{FileItem, FileUploadSupport, MultipartConfig}
 import org.apache.commons.io.{FileUtils, IOUtils}
+
 import scala.util.Using
 import gitbucket.core.service.SystemSettingsService
-import gitbucket.core.model.Profile.profile.blockingApi.Session
+import slick.jdbc.JdbcBackend.Session
 
 /**
  * Provides Ajax based file upload functionality.
@@ -31,10 +32,7 @@ class FileUploadController
     with ReleaseService
     with SystemSettingsService {
 
- protected implicit lazy val s: Session =
-   Database.getSession(request)
-
- post("/image") {
+  post("/image") {
     setMultipartConfig()
     execute(
       { (file, fileId) =>
@@ -180,6 +178,7 @@ class FileUploadController
   }
 
   private def onlyWikiEditable(owner: String, repository: String, loginAccount: Account)(action: => Any): Any = {
+    implicit val session: Session = Database.getSession(request)
     getRepository(owner, repository) match {
       case Some(x) =>
         x.repository.options.wikiOption match {
